@@ -1,4 +1,4 @@
- Geoff Greer's site: Profiling Ag. Writing My Own Scandir                //<!\[CDATA\[ var \_gaq = \_gaq || \[\]; var main\_css; var code\_css; var invert\_text = \[\]; var styles = { light: \["Light", "#fff", "/styles/main-light.css", "/styles/solarized-light.css", "Go dark."\], dark: \["Dark", "#000", "/styles/main-dark.css", "/styles/solarized-dark.css", "Brighten my day."\] }; function set\_style(style) { var date = new Date(); \_gaq.push(\["\_setCustomVar", 1, "Color", style\[0\], 1\]); document.body.style.backgroundColor = style\[1\]; main\_css.attributes.href.value = style\[2\]; code\_css.attributes.href.value = style\[3\]; invert\_text.forEach(function (elem) { elem.textContent = style\[4\]; }); date.setTime(date.getTime() + 30 \* 24 \* 60 \* 60 \* 1000); document.cookie = "main-css=" + main\_css.attributes.href.value + "; expires=" + date.toGMTString() + "; path=/"; return style; } function invert\_colors() { var style = main\_css.attributes.href.value === "/styles/main-light.css" ? set\_style(styles.dark) : set\_style(styles.light); \_gaq.push(\["\_trackEvent", "Color", "Set style", style\[0\]\]); } document.addEventListener("DOMContentLoaded", function () { code\_css = document.getElementById("code-css"); invert\_text = document.querySelectorAll(".invert-colors"); main\_css = document.getElementById("main-css"); if (window.location.hash.slice(1) === "dark") { set\_style(styles.dark); return; } if (window.location.hash.slice(1) === "light") { set\_style(styles.light); return; } document.cookie.split("; ").forEach(function (cookie) { cookie = cookie.split("="); if (cookie\[0\] === "main-css" && cookie\[1\] === "/styles/main-dark.css") { set\_style(styles.dark); } }); }); //\]\]> 
+Geoff Greer's site: Profiling Ag. Writing My Own Scandir //<!\[CDATA\[ var \_gaq = \_gaq || \[\]; var main_css; var code_css; var invert_text = \[\]; var styles = { light: \["Light", "#fff", "/styles/main-light.css", "/styles/solarized-light.css", "Go dark."\], dark: \["Dark", "#000", "/styles/main-dark.css", "/styles/solarized-dark.css", "Brighten my day."\] }; function set_style(style) { var date = new Date(); \_gaq.push(\["\_setCustomVar", 1, "Color", style\[0\], 1\]); document.body.style.backgroundColor = style\[1\]; main_css.attributes.href.value = style\[2\]; code_css.attributes.href.value = style\[3\]; invert_text.forEach(function (elem) { elem.textContent = style\[4\]; }); date.setTime(date.getTime() + 30 \* 24 \* 60 \* 60 \* 1000); document.cookie = "main-css=" + main_css.attributes.href.value + "; expires=" + date.toGMTString() + "; path=/"; return style; } function invert_colors() { var style = main_css.attributes.href.value === "/styles/main-light.css" ? set_style(styles.dark) : set_style(styles.light); \_gaq.push(\["\_trackEvent", "Color", "Set style", style\[0\]\]); } document.addEventListener("DOMContentLoaded", function () { code_css = document.getElementById("code-css"); invert_text = document.querySelectorAll(".invert-colors"); main_css = document.getElementById("main-css"); if (window.location.hash.slice(1) === "dark") { set_style(styles.dark); return; } if (window.location.hash.slice(1) === "light") { set_style(styles.light); return; } document.cookie.split("; ").forEach(function (cookie) { cookie = cookie.split("="); if (cookie\[0\] === "main-css" && cookie\[1\] === "/styles/main-dark.css") { set_style(styles.dark); } }); }); //\]\]>
 
 Go dark.
 
@@ -6,7 +6,7 @@ Go dark.
 
 [Projects](/projects/)
 
-[Ag](/ag/) · [FSEvents](/fsevents/) · [TLS config](/ciphersuite/) · [LS\_COLORS](/lscolors/)
+[Ag](/ag/) · [FSEvents](/fsevents/) · [TLS config](/ciphersuite/) · [LS_COLORS](/lscolors/)
 
 [Photos](/photos/)
 
@@ -14,17 +14,17 @@ Go dark.
 
 [Profiling Ag. Writing My Own Scandir](/2012/09/03/profiling-ag-writing-my-own-scandir/)
 
-* * *
+---
 
 03 Sep 2012
 
 Although [I benchmarked every revision of Ag](/2012/08/25/the-silver-searcher-benchmarking-revisions/), I didn’t profile them all. After looking at the graph in my previous post, I profiled some of the revisions where performance changed significantly.
 
-[![](/images/ag_profile_a87aa8f822d9029243423ef0725ec03ca347141b.png)](/images/ag_profile_a87aa8f822d9029243423ef0725ec03ca347141b.png) This is a run of revision a87aa8f8; right before I [reverted the performance regression](https://github.com/ggreer/the_silver_searcher/commit/e344ca087099431c1bcf733b3ae28316f6932683). You can see it spends 80% of execution time in `fnmatch()`.
+[![](https://geoff.greer.fm/images/ag_profile_a87aa8f822d9029243423ef0725ec03ca347141b.png)](https://geoff.greer.fm/images/ag_profile_a87aa8f822d9029243423ef0725ec03ca347141b.png) This is a run of revision a87aa8f8; right before I [reverted the performance regression](https://github.com/ggreer/the_silver_searcher/commit/e344ca087099431c1bcf733b3ae28316f6932683). You can see it spends 80% of execution time in `fnmatch()`.
 
-[![](/images/ag_profile_0.9.png)](/images/ag_profile_0.9.png) This is tagged release 0.9. Much faster, and it only spends about half the time in `fnmatch()`.
+[![](https://geoff.greer.fm/images/ag_profile_0.9.png)](https://geoff.greer.fm/images/ag_profile_0.9.png) This is tagged release 0.9. Much faster, and it only spends about half the time in `fnmatch()`.
 
-[![](/images/ag_profile_ag_scandir.png)](/images/ag_profile_ag_scandir.png) Finally, here’s a run after merging [pull request #56](https://github.com/ggreer/the_silver_searcher/pull/56). This fixed [issue #43](https://github.com/ggreer/the_silver_searcher/issues/43) and improved performance for many cases. I’m rather proud of that pull request, since it fixed a lot of issues. The rest of this post explains the specific changes I made to get everything working the way I wanted.
+[![](https://geoff.greer.fm/images/ag_profile_ag_scandir.png)](https://geoff.greer.fm/images/ag_profile_ag_scandir.png) Finally, here’s a run after merging [pull request #56](https://github.com/ggreer/the_silver_searcher/pull/56). This fixed [issue #43](https://github.com/ggreer/the_silver_searcher/issues/43) and improved performance for many cases. I’m rather proud of that pull request, since it fixed a lot of issues. The rest of this post explains the specific changes I made to get everything working the way I wanted.
 
 To start with, I should explain Ag’s old behavior. Before I merged that pull request, Ag called [`scandir()`](https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man3/scandir.3.html) on each directory. Then `scandir()` called [`filename_filter()`](https://github.com/ggreer/the_silver_searcher/blob/3deff34b45fa7e41bb9d7219029d8126c201bda5/src/ignore.c#L204) on every entry in the directory. To figure out if a file should be ignored, `filename_filter()` called `fnmatch()` on every entry in the global `char *ignore_patterns[]`. This set-up had several problems:
 
@@ -53,17 +53,17 @@ All-in-all, not a bad change-set. I fixed a lot of things I’d been meaning to 
 
 One last thing: I’d like to praise a piece of software and criticize another. I tip my hat to [Instruments.app](http://developer.apple.com/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Introduction/Introduction.html). I’ve found it invaluable for finding the causes of many memory leaks and performance issues. But I wag my finger at git. Git allows `.gitignore` files in any directory, and it allows these files to contain regular expressions. Worse, these regexes can reference sub-directories. For example, `foo/*/bar` is a valid ignore pattern. Regular expressions plus directory hierarchies translate to complicated implementations and confusing behavior for users. It’s no fun for anyone involved.
 
-* * *
+---
 
 [← S3 Logging and Analytics](/2012/08/28/s3-logging-and-analytics/) [ →The Silver Searcher: Adding Pthreads](/2012/09/07/the-silver-searcher-adding-pthreads/)
 
-* * *
+---
 
 When commenting, remember: Is it true? Is it necessary? Is it kind?
 
-/\* \* \* CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE \* \* \*/ var disqus\_shortname = 'ggreer'; // required: replace example with your forum shortname /\* \* \* DON'T EDIT BELOW THIS LINE \* \* \*/ (function() { var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true; dsq.src = '//' + disqus\_shortname + '.disqus.com/embed.js'; (document.getElementsByTagName('head')\[0\] || document.getElementsByTagName('body')\[0\]).appendChild(dsq); })();
+/\* \* \* CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE \* \* \*/ var disqus_shortname = 'ggreer'; // required: replace example with your forum shortname /\* \* \* DON'T EDIT BELOW THIS LINE \* \* \*/ (function() { var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true; dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js'; (document.getElementsByTagName('head')\[0\] || document.getElementsByTagName('body')\[0\]).appendChild(dsq); })();
 
-* * *
+---
 
 Go dark.
 
