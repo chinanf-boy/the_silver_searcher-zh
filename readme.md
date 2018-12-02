@@ -59,7 +59,7 @@
 
 [![#ag on Freenode](https://img.shields.io/badge/Freenode-%23ag-brightgreen.svg)](https://webchat.freenode.net/?channels=ag)
 
-你知道 C 吗?想改善 ag?[我邀请你和我配对](http://geoff.greer.fm/2014/10/13/help-me-get-to-ag-10/).
+你知道 C 吗?想改善 ag?[我邀请你和我一起合作](http://geoff.greer.fm/2014/10/13/help-me-get-to-ag-10/).
 
 ## Ag 的优点是什么?
 
