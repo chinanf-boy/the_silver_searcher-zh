@@ -32,10 +32,11 @@
 <!-- doc-templite END generated -->
 
 - [x] readme
+- [x] [命令行工具参数](./ag-cli.zh.md)
 - [ ] [添加 pthreads](./mds/the-silver-searcher-adding-pthreads.md)
 - [ ] [分析，让工具更快](./mds/making-programs-faster-profiling.md)
 - [ ] [分析，并编写我的`scandir`](./mds/profiling-ag-writing-my-own-scandir.md)
-- [ ] [使用gprof 分析](./mds/profiling-with-gprof.md)
+- [ ] [使用 gprof 分析](./mds/profiling-with-gprof.md)
 - [ ] [版本基准](./mds/the-silver-searcher-benchmarking-revisions.md)
 
 ### 贡献
@@ -47,11 +48,6 @@
 [help me live , live need money 💰](https://github.com/chinanf-boy/live-need-money)
 
 ---
-
-### 目录
-
-<!-- START doctoc -->
-<!-- END doctoc -->
 
 # 银色搜索者(The Silver Searcher)
 
