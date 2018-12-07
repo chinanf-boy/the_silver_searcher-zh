@@ -1,20 +1,8 @@
- Geoff Greer's site: Making Ag Faster: Profiling with Valgrind                //<!\[CDATA\[ var \_gaq = \_gaq || \[\]; var main\_css; var code\_css; var invert\_text = \[\]; var styles = { light: \["Light", "#fff", "/styles/main-light.css", "/styles/solarized-light.css", "Go dark."\], dark: \["Dark", "#000", "/styles/main-dark.css", "/styles/solarized-dark.css", "Brighten my day."\] }; function set\_style(style) { var date = new Date(); \_gaq.push(\["\_setCustomVar", 1, "Color", style\[0\], 1\]); document.body.style.backgroundColor = style\[1\]; main\_css.attributes.href.value = style\[2\]; code\_css.attributes.href.value = style\[3\]; invert\_text.forEach(function (elem) { elem.textContent = style\[4\]; }); date.setTime(date.getTime() + 30 \* 24 \* 60 \* 60 \* 1000); document.cookie = "main-css=" + main\_css.attributes.href.value + "; expires=" + date.toGMTString() + "; path=/"; return style; } function invert\_colors() { var style = main\_css.attributes.href.value === "/styles/main-light.css" ? set\_style(styles.dark) : set\_style(styles.light); \_gaq.push(\["\_trackEvent", "Color", "Set style", style\[0\]\]); } document.addEventListener("DOMContentLoaded", function () { code\_css = document.getElementById("code-css"); invert\_text = document.querySelectorAll(".invert-colors"); main\_css = document.getElementById("main-css"); if (window.location.hash.slice(1) === "dark") { set\_style(styles.dark); return; } if (window.location.hash.slice(1) === "light") { set\_style(styles.light); return; } document.cookie.split("; ").forEach(function (cookie) { cookie = cookie.split("="); if (cookie\[0\] === "main-css" && cookie\[1\] === "/styles/main-dark.css") { set\_style(styles.dark); } }); }); //\]\]> 
+Geoff Greer's site: Making Ag Faster: Profiling with Valgrind
 
-Go dark.
+[Making Ag Faster: Profiling with Valgrind](http:Geoff.Greer.fm/2012/01/23/making-programs-faster-profiling/)
 
-[Geoff.Greer.fm](/)
-
-[Projects](/projects/)
-
-[Ag](/ag/) · [FSEvents](/fsevents/) · [TLS config](/ciphersuite/) · [LS\_COLORS](/lscolors/)
-
-[Photos](/photos/)
-
-[About Me](/about/)
-
-[Making Ag Faster: Profiling with Valgrind](/2012/01/23/making-programs-faster-profiling/)
-
-* * *
+---
 
 23 Jan 2012
 
@@ -26,7 +14,7 @@ Improving performance is not always easy, but it is simple:
 2.  Make that part faster.
 3.  Repeat until it’s fast enough or you go insane.
 
-There are lots of profiling tools and programmers often argue about which is the best. I use [gprof](http://www.cs.utah.edu/dept/old/texinfo/as/gprof.html), [callgrind](http://valgrind.org/docs/manual/cl-manual.html), and [Instruments.app](http://developer.apple.com/library/mac/#documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Introduction/Introduction.html). Which profiler you use doesn’t matter as much as _actually using one_. They all have their advantages and disadvantages, but for this post I’ll only cover [Valgrind’s](http://valgrind.org/) callgrind. Using callgrind doesn’t require special compilation. Just invoke it with your program’s name and it will generate profiling data for callgrind\_annotate to analyze.
+There are lots of profiling tools and programmers often argue about which is the best. I use [gprof](http://www.cs.utah.edu/dept/old/texinfo/as/gprof.html), [callgrind](http://valgrind.org/docs/manual/cl-manual.html), and [Instruments.app](http://developer.apple.com/library/mac/#documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Introduction/Introduction.html). Which profiler you use doesn’t matter as much as _actually using one_. They all have their advantages and disadvantages, but for this post I’ll only cover [Valgrind’s](http://valgrind.org/) callgrind. Using callgrind doesn’t require special compilation. Just invoke it with your program’s name and it will generate profiling data for callgrind_annotate to analyze.
 
 Here’s a typical profiling run for Ag:
 
@@ -38,13 +26,13 @@ $ time valgrind --tool=callgrind --dsymutil=yes ./ag --literal abcdefghijklmnopq
 real	1m34.709s
 user	1m33.206s
 sys	0m1.492s
-$ callgrind_annotate --auto=yes callgrind.out.10361 
+$ callgrind_annotate --auto=yes callgrind.out.10361
 --------------------------------------------------------------------------------
 Profile data file 'callgrind.out.10361' (creator: callgrind-3.6.1-Debian)
 --------------------------------------------------------------------------------
-I1 cache: 
-D1 cache: 
-LL cache: 
+I1 cache:
+D1 cache:
+LL cache:
 Timerange: Basic block 0 - 798409857
 Trigger: Program termination
 Profiled target:  ./ag --literal abcdefghijklmnopqrstuvwxyz ../ (PID 10361, part 1)
@@ -52,12 +40,12 @@ Events recorded:  Ir
 Events shown:     Ir
 Event sort order: Ir
 Thresholds:       99
-Include dirs:     
-User annotated:   
+Include dirs:
+User annotated:
 Auto-annotation:  on
 
 --------------------------------------------------------------------------------
-           Ir 
+           Ir
 --------------------------------------------------------------------------------
 3,068,387,924  PROGRAM TOTALS
 
@@ -85,7 +73,7 @@ Auto-annotation:  on
 (snip)
 ```
 
-I snipped out the annotated source code. You can see the full output [here](/code/ag_callgrind_slow.txt).
+I snipped out the annotated source code. You can see the full output [here](http:Geoff.Greer.fm/code/ag_callgrind_slow.txt).
 
 This profiling info tells me that I’m spending all my time in strnstr(). I did some research on string-matching and found out about the [Boyer-Moore algorithm](http://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string_search_algorithm). After some [more reading](http://blog.phusion.nl/2010/12/06/efficient-substring-searching/), I decided to go with a simplified version of Boyer-Moore called [Boyer-Moore-Horspool](http://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm).
 
@@ -100,9 +88,9 @@ $ callgrind_annotate --auto=yes callgrind.out.11921
 --------------------------------------------------------------------------------
 Profile data file 'callgrind.out.11921' (creator: callgrind-3.6.1-Debian)
 --------------------------------------------------------------------------------
-I1 cache: 
-D1 cache: 
-LL cache: 
+I1 cache:
+D1 cache:
+LL cache:
 Timerange: Basic block 0 - 228181262
 Trigger: Program termination
 Profiled target:  ./ag --literal abcdefghijklmnopqrstuvwxyz ../ (PID 11921, part 1)
@@ -110,12 +98,12 @@ Events recorded:  Ir
 Events shown:     Ir
 Event sort order: Ir
 Thresholds:       99
-Include dirs:     
-User annotated:   
+Include dirs:
+User annotated:
 Auto-annotation:  on
 
 --------------------------------------------------------------------------------
-           Ir 
+           Ir
 --------------------------------------------------------------------------------
 1,139,437,344  PROGRAM TOTALS
 
@@ -151,7 +139,7 @@ Auto-annotation:  on
 (snip)
 ```
 
-For the curious, full output of callgrind\_annotate is [here](/code/ag_callgrind.txt).
+For the curious, full output of callgrind_annotate is [here](http:Geoff.Greer.fm/code/ag_callgrind.txt).
 
 That’s a 3x overall speedup and a 27x speedup in string matching. Impressive! Now Ag is spending most of the time figuring out whether or not it should search a file. It’s clear where I need to optimize next.
 
@@ -159,17 +147,17 @@ Valgrind isn’t perfect though. It makes programs run 25-50x slower than they n
 
 Getting more useful data requires switching from an instrumenting profiler to a sampling profiler. Both Instruments.app and gprof are sampling profilers, but this post is already too long. I’ll cover them some other time.
 
-* * *
+---
 
-[← Building for Others](/2012/01/20/building-for-others/) [ →Programming: We can do Science](/2012/01/30/programming-we-can-do-science/)
+[← Building for Others](http:Geoff.Greer.fm/2012/01/20/building-for-others/) [ →Programming: We can do Science](http:Geoff.Greer.fm/2012/01/30/programming-we-can-do-science/)
 
-* * *
+---
 
 When commenting, remember: Is it true? Is it necessary? Is it kind?
 
-/\* \* \* CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE \* \* \*/ var disqus\_shortname = 'ggreer'; // required: replace example with your forum shortname /\* \* \* DON'T EDIT BELOW THIS LINE \* \* \*/ (function() { var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true; dsq.src = '//' + disqus\_shortname + '.disqus.com/embed.js'; (document.getElementsByTagName('head')\[0\] || document.getElementsByTagName('body')\[0\]).appendChild(dsq); })();
+/\* \* \* CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE \* \* \*/ var disqus_shortname = 'ggreer'; // required: replace example with your forum shortname /\* \* \* DON'T EDIT BELOW THIS LINE \* \* \*/ (function() { var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true; dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js'; (document.getElementsByTagName('head')\[0\] || document.getElementsByTagName('body')\[0\]).appendChild(dsq); })();
 
-* * *
+---
 
 Go dark.
 

@@ -21,10 +21,9 @@
 <!-- repo = 'ggreer/the_silver_searcher' -->
 <!-- commit = '1b06a9fd8d9ad0aaf235b4a752e605dfd4bb7ced' -->
 <!-- time = '2018-11-27' -->
-
-| 翻译的原文 | 与日期        | 最新更新 | 更多                       |
-| ---------- | ------------- | -------- | -------------------------- |
-| [commit]   | ⏰ 2018-11-27 | ![last]  | [中文翻译][translate-list] |
+翻译的原文 | 与日期 | 最新更新 | 更多
+---|---|---|---
+[commit] | ⏰ 2018-11-27 | ![last] | [中文翻译][translate-list]
 
 [last]: https://img.shields.io/github/last-commit/ggreer/the_silver_searcher.svg
 [commit]: https://github.com/ggreer/the_silver_searcher/tree/1b06a9fd8d9ad0aaf235b4a752e605dfd4bb7ced

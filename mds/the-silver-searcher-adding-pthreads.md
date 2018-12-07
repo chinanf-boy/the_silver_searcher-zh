@@ -1,18 +1,6 @@
-Geoff Greer's site: The Silver Searcher: Adding Pthreads //<!\[CDATA\[ var \_gaq = \_gaq || \[\]; var main_css; var code_css; var invert_text = \[\]; var styles = { light: \["Light", "#fff", "/styles/main-light.css", "/styles/solarized-light.css", "Go dark."\], dark: \["Dark", "#000", "/styles/main-dark.css", "/styles/solarized-dark.css", "Brighten my day."\] }; function set_style(style) { var date = new Date(); \_gaq.push(\["\_setCustomVar", 1, "Color", style\[0\], 1\]); document.body.style.backgroundColor = style\[1\]; main_css.attributes.href.value = style\[2\]; code_css.attributes.href.value = style\[3\]; invert_text.forEach(function (elem) { elem.textContent = style\[4\]; }); date.setTime(date.getTime() + 30 \* 24 \* 60 \* 60 \* 1000); document.cookie = "main-css=" + main_css.attributes.href.value + "; expires=" + date.toGMTString() + "; path=/"; return style; } function invert_colors() { var style = main_css.attributes.href.value === "/styles/main-light.css" ? set_style(styles.dark) : set_style(styles.light); \_gaq.push(\["\_trackEvent", "Color", "Set style", style\[0\]\]); } document.addEventListener("DOMContentLoaded", function () { code_css = document.getElementById("code-css"); invert_text = document.querySelectorAll(".invert-colors"); main_css = document.getElementById("main-css"); if (window.location.hash.slice(1) === "dark") { set_style(styles.dark); return; } if (window.location.hash.slice(1) === "light") { set_style(styles.light); return; } document.cookie.split("; ").forEach(function (cookie) { cookie = cookie.split("="); if (cookie\[0\] === "main-css" && cookie\[1\] === "/styles/main-dark.css") { set_style(styles.dark); } }); }); //\]\]>
+Geoff Greer's site: The Silver Searcher: Adding Pthreads
 
-Go dark.
-
-[Geoff.Greer.fm](/)
-
-[Projects](/projects/)
-
-[Ag](/ag/) · [FSEvents](/fsevents/) · [TLS config](/ciphersuite/) · [LS_COLORS](/lscolors/)
-
-[Photos](/photos/)
-
-[About Me](/about/)
-
-[The Silver Searcher: Adding Pthreads](/2012/09/07/the-silver-searcher-adding-pthreads/)
+[The Silver Searcher: Adding Pthreads](http:Geoff.Greer.fm/2012/09/07/the-silver-searcher-adding-pthreads/)
 
 ---
 
@@ -83,7 +71,7 @@ It looks like this project is starting to wrap up. Now that I’ve maxed-out per
 
 ---
 
-[← Profiling Ag. Writing My Own Scandir](/2012/09/03/profiling-ag-writing-my-own-scandir/) [ →A Responsible Product Sunset Pledge](/2012/09/19/a-responsible-product-sunset-pledge/)
+[← Profiling Ag. Writing My Own Scandir](http:Geoff.Greer.fm/2012/09/03/profiling-ag-writing-my-own-scandir/) [ →A Responsible Product Sunset Pledge](http:Geoff.Greer.fm/2012/09/19/a-responsible-product-sunset-pledge/)
 
 ---
 
