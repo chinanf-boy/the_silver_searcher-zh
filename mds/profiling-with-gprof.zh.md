@@ -1,16 +1,16 @@
-Geoff Greer's site: Profiling with Gprof
+Geoff Greer的网站:Gprof的分析
 
 [Profiling with Gprof](http:Geoff.Greer.fm/2012/02/08/profiling-with-gprof/)
 
----
+* * *
 
-08 Feb 2012
+2012年2月8日
 
-[I said I’d post about gprof](http:Geoff.Greer.fm/2012/01/23/making-programs-faster-profiling/), so here goes.
+[I said I’d post about gprof](http:Geoff.Greer.fm/2012/01/23/making-programs-faster-profiling/),所以这里.
 
-Valgrind and gprof are two very different tools. Valgrind is an [instrumenting profiler](http://en.wikipedia.org/wiki/Profiling_%28computer_programming%29#Instrumenting_profilers). Gprof is a [sampling profiler](http://en.wikipedia.org/wiki/Profiling_%28computer_programming%29#Statistical_profilers). Gprof spends most of its time doing nothing. Then every 100,000,000 clock cycles or so, it looks at the [instruction pointer](http://en.wikipedia.org/wiki/Program_counter) to see what function your program is in. It collects that data enough times to end up with a good idea of where your program is spending its time. The advantage of this approach is that your program runs almost at full speed. This gives you a better idea of how much time your program spends waiting for things like disk or network I/O.
+Valgrind和gprof是两个非常不同的工具.Valgrind是一个[instrumenting profiler](http://en.wikipedia.org/wiki/Profiling_%28computer_programming%29#Instrumenting_profilers).Gprof是一个[sampling profiler](http://en.wikipedia.org/wiki/Profiling_%28computer_programming%29#Statistical_profilers).Gprof大部分时间都在做无所事事.然后,每隔100,000,000个时钟周期左右,就会看到[instruction pointer](http://en.wikipedia.org/wiki/Program_counter)查看您的程序所使用的功能.它会收集足够多次的数据,以便最终了解您的程序花费时间的位置.这种方法的优点是您的程序几乎全速运行.这可以让您更好地了解程序花费多长时间等待磁盘或网络I / O等操作.我对gprof的典型分析经验如下所示:
 
-My typical profiling experience with gprof looks like this:
+一些注意事项:要使gprof正常工作,您需要将-pg添加到CFLAGS中.
 
 ```text
 (sets CFLAGS=-pg in Makefile.am)
@@ -48,14 +48,14 @@ Each sample counts as 0.01 seconds.
   0.00      0.61     0.00        1     0.00     0.00  set_log_level
 ```
 
-Some caveats: for gprof to work, you need to add -pg to your CFLAGS. Also, [gprof is broken on OS X](http://lists.apple.com/archives/PerfOptimization-dev/2006/Apr/msg00014.html), so run it on a linux server. If you want a sampling profiler on OS X, I recommend Instruments.app.
+也,,所以在linux服务器上运行它.[gprof is broken on OS X](http://lists.apple.com/archives/PerfOptimization-dev/2006/Apr/msg00014.html)如果你想在OS X上使用采样分析器,我推荐使用Instruments.app.评论时,请记住:这是真的吗?
 
----
+* * *
 
 [← My Twisted Hack Day Project: Why is the Reactor Pausing?](http:Geoff.Greer.fm/2012/02/04/my-twisted-hack-day-project-why-is-the-reactor-pausing/) [ →From Wordpress to Jekyll](http:Geoff.Greer.fm/2012/02/21/from-wordpress-to-jekyll/)
 
----
+* * *
 
-When commenting, remember: Is it true? Is it necessary? Is it kind?
+有必要吗?好吗?
 
----
+* * *

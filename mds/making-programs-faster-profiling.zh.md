@@ -1,22 +1,22 @@
-Geoff Greer's site: Making Ag Faster: Profiling with Valgrind
+Geoff Greer的网站:让Ag更快:用Valgrind进行分析
 
 [Making Ag Faster: Profiling with Valgrind](http:Geoff.Greer.fm/2012/01/23/making-programs-faster-profiling/)
 
----
+* * *
 
-23 Jan 2012
+2012年1月23日
 
-These days, a lot of software is written to be “fast enough”. Since code bases can be very large, there’s no such thing as “fast enough” for [The Silver Searcher](https://github.com/ggreer/the_silver_searcher). In fact, my main goal with Ag is speed.
+现在,许多软件被写成"足够快".由于代码库可能非常大,因此没有"足够快"的东西[The Silver Searcher](https://github.com/ggreer/the_silver_searcher).事实上,我与Ag的主要目标是速度.
 
-Improving performance is not always easy, but it is simple:
+提高性能并不总是那么容易,但很简单:
 
-1.  Find the slowest part of the program.
-2.  Make that part faster.
-3.  Repeat until it’s fast enough or you go insane.
+1.  找到程序中最慢的部分.
+2.  让这部分更快.
+3.  重复,直到它足够快或你疯了.
 
-There are lots of profiling tools and programmers often argue about which is the best. I use [gprof](http://www.cs.utah.edu/dept/old/texinfo/as/gprof.html), [callgrind](http://valgrind.org/docs/manual/cl-manual.html), and [Instruments.app](http://developer.apple.com/library/mac/#documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Introduction/Introduction.html). Which profiler you use doesn’t matter as much as _actually using one_. They all have their advantages and disadvantages, but for this post I’ll only cover [Valgrind’s](http://valgrind.org/) callgrind. Using callgrind doesn’t require special compilation. Just invoke it with your program’s name and it will generate profiling data for callgrind_annotate to analyze.
+有很多分析工具和程序员经常争论哪个是最好的.我用[gprof](http://www.cs.utah.edu/dept/old/texinfo/as/gprof.html),[callgrind](http://valgrind.org/docs/manual/cl-manual.html),和[Instruments.app](http://developer.apple.com/library/mac/#documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Introduction/Introduction.html).您使用哪种分析器并不重要*实际上使用一个*.他们都有自己的优点和缺点,但对于这篇文章,我只会介绍[Valgrind’s](http://valgrind.org/)callgrind.使用callgrind不需要特殊编译.只需使用您的程序名称调用它,它将生成callgrind_annotate的分析数据以进行分析.
 
-Here’s a typical profiling run for Ag:
+这是Ag的典型分析运行:
 
 ```text
 $ make clean && ./build.sh
@@ -73,11 +73,11 @@ Auto-annotation:  on
 (snip)
 ```
 
-I snipped out the annotated source code. You can see the full output [here](http:Geoff.Greer.fm/code/ag_callgrind_slow.txt).
+我剪掉了带注释的源代码.你可以看到完整的输出[here](http:Geoff.Greer.fm/code/ag_callgrind_slow.txt).
 
-This profiling info tells me that I’m spending all my time in strnstr(). I did some research on string-matching and found out about the [Boyer-Moore algorithm](http://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string_search_algorithm). After some [more reading](http://blog.phusion.nl/2010/12/06/efficient-substring-searching/), I decided to go with a simplified version of Boyer-Moore called [Boyer-Moore-Horspool](http://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm).
+这个分析信息告诉我,我将所有时间花在strnstr()上.我做了一些关于字符串匹配的研究,并发现了关于[Boyer-Moore algorithm](http://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string_search_algorithm).过了一些[more reading](http://blog.phusion.nl/2010/12/06/efficient-substring-searching/),我决定采用Boyer-Moore的简化版本[Boyer-Moore-Horspool](http://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm).
 
-Here’s the data after I [implemented](https://github.com/ggreer/the_silver_searcher/pull/12) Boyer-Moore-Horspool strstr:
+这是我之后的数据[implemented](https://github.com/ggreer/the_silver_searcher/pull/12)Boyer-Moore-Horspool strstr:
 
 ```text
 $ time valgrind --tool=callgrind ./ag --literal abcdefghijklmnopqrstuvwxyz ../
@@ -139,20 +139,20 @@ Auto-annotation:  on
 (snip)
 ```
 
-For the curious, full output of callgrind_annotate is [here](http:Geoff.Greer.fm/code/ag_callgrind.txt).
+对于好奇的,callgrind_annotate的完整输出是[here](http:Geoff.Greer.fm/code/ag_callgrind.txt).
 
-That’s a 3x overall speedup and a 27x speedup in string matching. Impressive! Now Ag is spending most of the time figuring out whether or not it should search a file. It’s clear where I need to optimize next.
+这是一个3倍的整体加速和27倍的字符串匹配加速.令人印象深刻!现在,Ag花费大部分时间来确定它是否应该搜索文件.很明显我需要在下一步进行优化.
 
-Valgrind isn’t perfect though. It makes programs run 25-50x slower than they normally would, so you won’t notice if you’re spending all your time waiting for network or disk I/O. In the case of Ag, this turned into a 20% performance improvement in my benchmarks.
+Valgrind并不完美.它使程序运行速度比通常慢25-50倍,因此您不会注意到是否花费了所有时间等待网络或磁盘I / O.在Ag的情况下,我的基准测试中性能提高了20%.
 
-Getting more useful data requires switching from an instrumenting profiler to a sampling profiler. Both Instruments.app and gprof are sampling profilers, but this post is already too long. I’ll cover them some other time.
+获得更多有用的数据需要从仪器分析器切换到采样分析器.Instruments.app和gprof都是采样分析器,但这篇文章已经太长了.我会在其他时间报道他们.
 
----
+* * *
 
 [← Building for Others](http:Geoff.Greer.fm/2012/01/20/building-for-others/) [ →Programming: We can do Science](http:Geoff.Greer.fm/2012/01/30/programming-we-can-do-science/)
 
----
+* * *
 
-When commenting, remember: Is it true? Is it necessary? Is it kind?
+评论时,请记住:这是真的吗?有必要吗?好吗?
 
----
+* * *
