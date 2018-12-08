@@ -15,7 +15,7 @@
 
 ---
 
-## 校对 🀄️
+## 校对 ✅
 
 <!-- doc-templite START generated -->
 <!-- repo = 'ggreer/the_silver_searcher' -->
@@ -35,8 +35,8 @@
 - [x] [添加 pthreads](./mds/the-silver-searcher-adding-pthreads.zh.md)
 - [x] [分析，让工具更快](./mds/making-programs-faster-profiling.zh.md)
 - [x] [分析，并编写我的`scandir`](./mds/profiling-ag-writing-my-own-scandir.zh.md)
-- [ ] [使用 gprof 分析](./mds/profiling-with-gprof.zh.md)
-- [ ] [版本基准](./mds/the-silver-searcher-benchmarking-revisions.zh.md)
+- [x] [使用 gprof 分析](./mds/profiling-with-gprof.zh.md)
+- [x] [版本基准](./mds/the-silver-searcher-benchmarking-revisions.zh.md)
 
 ### 贡献
 

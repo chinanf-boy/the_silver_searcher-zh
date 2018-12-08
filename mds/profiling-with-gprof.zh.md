@@ -1,16 +1,14 @@
-Geoff Greer的网站:Gprof的分析
+Geoff Greer 的网站: 用 Gprof 分析
 
 [Profiling with Gprof](http:Geoff.Greer.fm/2012/02/08/profiling-with-gprof/)
 
-* * *
+---
 
-2012年2月8日
+2012 年 2 月 8 日
 
-[I said I’d post about gprof](http:Geoff.Greer.fm/2012/01/23/making-programs-faster-profiling/),所以这里.
+[我 说过，我要发表关于 gprof 的 博文](http:Geoff.Greer.fm/2012/01/23/making-programs-faster-profiling/),所以这里.
 
-Valgrind和gprof是两个非常不同的工具.Valgrind是一个[instrumenting profiler](http://en.wikipedia.org/wiki/Profiling_%28computer_programming%29#Instrumenting_profilers).Gprof是一个[sampling profiler](http://en.wikipedia.org/wiki/Profiling_%28computer_programming%29#Statistical_profilers).Gprof大部分时间都在做无所事事.然后,每隔100,000,000个时钟周期左右,就会看到[instruction pointer](http://en.wikipedia.org/wiki/Program_counter)查看您的程序所使用的功能.它会收集足够多次的数据,以便最终了解您的程序花费时间的位置.这种方法的优点是您的程序几乎全速运行.这可以让您更好地了解程序花费多长时间等待磁盘或网络I / O等操作.我对gprof的典型分析经验如下所示:
-
-一些注意事项:要使gprof正常工作,您需要将-pg添加到CFLAGS中.
+Valgrind 和 gprof 是两个非常不同的工具。Valgrind 是一个[插装型 分析器](http://en.wikipedia.org/wiki/Profiling_%28computer_programming%29#Instrumenting_profilers).Gprof 是一个[采样 分析器](http://en.wikipedia.org/wiki/Profiling_%28computer_programming%29#Statistical_profilers)。Gprof 大部分时间都在无所事事。然后,每隔 100,000,000 个时钟周期左右,就会看到[指令指针](http://en.wikipedia.org/wiki/Program_counter)查看您的程序所使用的函数。它会收集足够多次的数据,以便最终了解您的程序花费时间的位置。这种方法的优点是您的程序几乎全速运行。这可以让您更好地了解程序花费多长时间等待磁盘或网络 I/O 等操作。我对 gprof 的典型分析经验如下所示:
 
 ```text
 (sets CFLAGS=-pg in Makefile.am)
@@ -48,14 +46,6 @@ Each sample counts as 0.01 seconds.
   0.00      0.61     0.00        1     0.00     0.00  set_log_level
 ```
 
-也,,所以在linux服务器上运行它.[gprof is broken on OS X](http://lists.apple.com/archives/PerfOptimization-dev/2006/Apr/msg00014.html)如果你想在OS X上使用采样分析器,我推荐使用Instruments.app.评论时,请记住:这是真的吗?
+一些注意事项:要使 gprof 正常工作。您需要将 -pg 添加到 CFLAGS 中，所以在 linux 服务器上运行它.[gprof 在 OS X 中坏坏的](http://lists.apple.com/archives/PerfOptimization-dev/2006/Apr/msg00014.html)，如果你想在 OS X 上使用采样分析器,我推荐使用 Instruments.app。
 
-* * *
-
-[← My Twisted Hack Day Project: Why is the Reactor Pausing?](http:Geoff.Greer.fm/2012/02/04/my-twisted-hack-day-project-why-is-the-reactor-pausing/) [ →From Wordpress to Jekyll](http:Geoff.Greer.fm/2012/02/21/from-wordpress-to-jekyll/)
-
-* * *
-
-有必要吗?好吗?
-
-* * *
+---
