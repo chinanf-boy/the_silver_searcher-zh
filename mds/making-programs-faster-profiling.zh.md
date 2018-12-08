@@ -1,22 +1,22 @@
-Geoff Greer的网站:让Ag更快:用Valgrind进行分析
+Geoff Greer 的网站:让 Ag 更快:用 Valgrind 进行分析
 
 [Making Ag Faster: Profiling with Valgrind](http:Geoff.Greer.fm/2012/01/23/making-programs-faster-profiling/)
 
-* * *
+---
 
-2012年1月23日
+2012 年 1 月 23 日
 
-现在,许多软件被写成"足够快".由于代码库可能非常大,因此没有"足够快"的东西[The Silver Searcher](https://github.com/ggreer/the_silver_searcher).事实上,我与Ag的主要目标是速度.
+今时今日，许多软件说它"足够快"。由于要搜索的代码库可能非常大，因此对[The Silver Searcher](https://github.com/ggreer/the_silver_searcher)来说，没有"足够快"的说法。事实上,我想 Ag 的主要目标应该是速度。
 
-提高性能并不总是那么容易,但很简单:
+提高性能，并不总是那么容易，但很简单:
 
 1.  找到程序中最慢的部分.
 2.  让这部分更快.
-3.  重复,直到它足够快或你疯了.
+3.  重复,直到它足够快，或你疯了.
 
-有很多分析工具和程序员经常争论哪个是最好的.我用[gprof](http://www.cs.utah.edu/dept/old/texinfo/as/gprof.html),[callgrind](http://valgrind.org/docs/manual/cl-manual.html),和[Instruments.app](http://developer.apple.com/library/mac/#documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Introduction/Introduction.html).您使用哪种分析器并不重要*实际上使用一个*.他们都有自己的优点和缺点,但对于这篇文章,我只会介绍[Valgrind’s](http://valgrind.org/)callgrind.使用callgrind不需要特殊编译.只需使用您的程序名称调用它,它将生成callgrind_annotate的分析数据以进行分析.
+有很多分析工具，会让程序员经常争论哪个是最好的。我用[gprof](http://www.cs.utah.edu/dept/old/texinfo/as/gprof.html),[callgrind](http://valgrind.org/docs/manual/cl-manual.html),和[Instruments.app](http://developer.apple.com/library/mac/#documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Introduction/Introduction.html)。您使用哪种分析器并不重要，*实际上使用一个*就够了。他们都有自己的优点和缺点,但对于这篇文章,我只会介绍[Valgrind 的](http://valgrind.org/)callgrind。使用 callgrind 不需要特殊编译。只需使用您的程序名称调用它，它将生成 callgrind_annotate 的分析数据以进行分析。
 
-这是Ag的典型分析运行:
+这是 Ag 的典型分析运行:
 
 ```text
 $ make clean && ./build.sh
@@ -73,11 +73,11 @@ Auto-annotation:  on
 (snip)
 ```
 
-我剪掉了带注释的源代码.你可以看到完整的输出[here](http:Geoff.Greer.fm/code/ag_callgrind_slow.txt).
+我剪掉了带注释的源代码。你可以在[这里](http:Geoff.Greer.fm/code/ag_callgrind_slow.txt)看到完整的输出.
 
-这个分析信息告诉我,我将所有时间花在strnstr()上.我做了一些关于字符串匹配的研究,并发现了关于[Boyer-Moore algorithm](http://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string_search_algorithm).过了一些[more reading](http://blog.phusion.nl/2010/12/06/efficient-substring-searching/),我决定采用Boyer-Moore的简化版本[Boyer-Moore-Horspool](http://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm).
+这个分析信息告诉我，我将所有时间花在`strnstr()`上。我做了一些关于字符串匹配的研究,并发现了关于[Boyer-Moore 算法](http://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string_search_algorithm)。再[读了更多 ](http://blog.phusion.nl/2010/12/06/efficient-substring-searching/),我决定采用 Boyer-Moore 的简化版本[Boyer-Moore-Horspool](http://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm).
 
-这是我之后的数据[implemented](https://github.com/ggreer/the_silver_searcher/pull/12)Boyer-Moore-Horspool strstr:
+这是我[实现](https://github.com/ggreer/the_silver_searcher/pull/12)Boyer-Moore-Horspool strstr 之后的数据:
 
 ```text
 $ time valgrind --tool=callgrind ./ag --literal abcdefghijklmnopqrstuvwxyz ../
@@ -139,20 +139,12 @@ Auto-annotation:  on
 (snip)
 ```
 
-对于好奇的,callgrind_annotate的完整输出是[here](http:Geoff.Greer.fm/code/ag_callgrind.txt).
+对于好奇的童鞋，callgrind_annotate 的完整输出是[在这里](http:Geoff.Greer.fm/code/ag_callgrind.txt).
 
-这是一个3倍的整体加速和27倍的字符串匹配加速.令人印象深刻!现在,Ag花费大部分时间来确定它是否应该搜索文件.很明显我需要在下一步进行优化.
+这是一个 整体 3 倍的加速和 27 倍的字符串匹配加速。令人印象深刻! 现在,Ag 花费大部分时间来确定它是否应该搜索文件。很明显我需要在这里，进行下一步优化。
 
-Valgrind并不完美.它使程序运行速度比通常慢25-50倍,因此您不会注意到是否花费了所有时间等待网络或磁盘I / O.在Ag的情况下,我的基准测试中性能提高了20%.
+Valgrind 并不完美。它使程序运行速度比通常慢 25-50 倍，因此您不会注意到是否花费了所有时间等待网络或磁盘 I/O。在 Ag 的情况下,我的基准测试性能提高了 20%.
 
-获得更多有用的数据需要从仪器分析器切换到采样分析器.Instruments.app和gprof都是采样分析器,但这篇文章已经太长了.我会在其他时间报道他们.
+要获得更多有用的数据，需要从仪器分析器，切换到采样分析器。Instruments.app 和 gprof 都是采样分析器，但这篇文章已经太长了。我会在其他时间报道他们.
 
-* * *
-
-[← Building for Others](http:Geoff.Greer.fm/2012/01/20/building-for-others/) [ →Programming: We can do Science](http:Geoff.Greer.fm/2012/01/30/programming-we-can-do-science/)
-
-* * *
-
-评论时,请记住:这是真的吗?有必要吗?好吗?
-
-* * *
+---

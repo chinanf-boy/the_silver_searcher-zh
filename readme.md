@@ -33,7 +33,7 @@
 - [x] readme
 - [x] [命令行工具参数](./ag-cli.zh.md)
 - [x] [添加 pthreads](./mds/the-silver-searcher-adding-pthreads.zh.md)
-- [ ] [分析，让工具更快](./mds/making-programs-faster-profiling.zh.md)
+- [x] [分析，让工具更快](./mds/making-programs-faster-profiling.zh.md)
 - [ ] [分析，并编写我的`scandir`](./mds/profiling-ag-writing-my-own-scandir.zh.md)
 - [ ] [使用 gprof 分析](./mds/profiling-with-gprof.zh.md)
 - [ ] [版本基准](./mds/the-silver-searcher-benchmarking-revisions.zh.md)
